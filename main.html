@@ -1,0 +1,33 @@
+<html>
+<head>
+</head>
+<body>
+	<a href="login.html"><input type="button"value="back"/></a>
+	<input type="button"name="submit"value="logout" onclick="arm(this)"/>
+	<a href="logs.html"><input type="button"value="logs"/></a>
+	<a href="cam.html"><input type="button"value="camera"/></a>
+	<input type="button"name="submit"value="armaway" onclick="arm(this)"/>
+	<input type="button"name="submit"value="armhome" onclick="arm(this)"/>
+	<input type="button"name="submit"value="disarm" onclick="arm(this)"/>
+	<span id="err"></span>
+	<script>
+		function arm(e){
+			var params=e.name+"="+e.value;
+			var http=new XMLHttpRequest();
+			http.open("post","json",true);
+			http.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+			http.setRequestHeader("Content-length",params.length);
+			http.setRequestHeader("connection","close");
+			http.onreadystatechange=function(){
+				if(http.readyState==4&&http.status==200){
+					var o=JSON.parse(http.responseText);
+					var e=document.getElementById("err");
+					for(var key in o)
+						e.innerHTML+="<p>"+key+" : "+o[key];
+				}
+			}
+			http.send(params);
+		}
+	</script>
+</body>
+</html>

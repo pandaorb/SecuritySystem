@@ -1,0 +1,40 @@
+<html>
+<head>
+	<title>login</title>
+</head>
+<body>
+	<form action="javascript:func();">
+		<h3>credentials</h3>
+		<span>key</span>
+		<input type="text"name="key"id="key">
+		<input type="submit"value="validate"name="submit"id="submit">
+	</form>
+	<span id="err"></span>
+	<a id="main"href="main.html"style="display:hidden">go to main page</a>
+	<script>
+		function func(){
+			var params="key="
+			+document.getElementById("key").value
+			+"&submit="
+			+document.getElementById("submit").value;
+			var http=new XMLHttpRequest();
+			http.open("post","json",true);
+			http.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+			http.setRequestHeader("Content-length",params.length);
+			http.setRequestHeader("connection","close");
+			http.onreadystatechange=function(){
+				if(http.readyState==4&&http.status==200){
+					var o=JSON.parse(http.responseText);
+					if(o.key=="valid"){
+						document.getElementById("main").style.display="block";
+						document.getElementById("err").innerHTML=o.key;
+					}else{
+						document.getElementById("err").innerHTML=o.key;
+					}
+				}
+			}
+			http.send(params);
+		}
+	</script>
+</body>
+</html>

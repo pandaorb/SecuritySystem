@@ -1,0 +1,32 @@
+<html>
+<head>
+</head>
+<body>
+	<a href="main.html"><input type="button"value="back"></a>
+	<input type="button"name="submit"value="viewcam"onclick="func(this)"/>
+	<input type="button"name="submit"value="togglecam"onclick="func(this)"/>
+	<img id="video"style="display:none;"src="home.jpe">
+	<span id="err"></span>
+	<script>
+		function func(e){
+			var params=e.name+"="+e.value;
+			var http=new XMLHttpRequest();
+			http.open("post","json",true);
+			http.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+			http.setRequestHeader("Content-length",params.length);
+			http.setRequestHeader("connection","close");
+			http.onreadystatechange=function(){
+				if(http.readyState==4&&http.status==200){
+					var o=JSON.parse(http.responseText);
+					if(o.cam=="online"&&e.value=="viewcam")
+						document.getElementById("video").style.display="block";
+					else
+						document.getElementById("video").style.display="none";
+					document.getElementById("err").innerHTML=o.cam;
+				}
+			}
+			http.send(params);
+		}
+	</script>
+</body>
+</html>

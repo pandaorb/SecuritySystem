@@ -1,0 +1,28 @@
+<html>
+<head>
+</head>
+<body>
+	<a href="main.html"><input type="button"value="back"></a>
+	<input type="button"name="submit"value="logs"onclick="logs(this)"/>
+	<span id="err"></span>
+	<script>
+		function logs(e){
+			var params=e.name+"="+e.value;
+			var http=new XMLHttpRequest();
+			http.open("post","json",true);
+			http.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+			http.setRequestHeader("Content-length",params.length);
+			http.setRequestHeader("connection","close");
+			http.onreadystatechange=function(){
+				if(http.readyState==4&&http.status==200){
+					var o=JSON.parse(http.responseText);
+					var e=document.getElementById("err");
+					for(var key in o)
+						e.innerHTML+="<p>"+key+" : "+o[key];
+				}
+			}
+			http.send(params);
+		}
+	</script>
+</body>
+</html>
